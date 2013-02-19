@@ -4,5 +4,15 @@
     <string name="app_name">Patient Log</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="Submit">Submit</string>
+    <string name="Adtl">Additional Info</string>
+    <string name="Question">How are you feeling today?</string>
+    <string name="sSR0">Select Your Star rating 1 being Worst and 5 being Best</string>
+    <string name="sSR1">Terrible</string>
+    <string name="sSR2">Bad</string>
+    <string name="sSR3">Average</string>
+    <string name="sSR4">Good</string>
+    <string name="sSR5">Best</string>
+
 
 </resources>
