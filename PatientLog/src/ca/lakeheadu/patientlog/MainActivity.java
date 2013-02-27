@@ -1,5 +1,8 @@
 package ca.lakeheadu.patientlog;
 
+
+import java.util.List;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -9,6 +12,8 @@ import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
+
 
 
 public class MainActivity extends Activity implements OnRatingBarChangeListener {
@@ -19,6 +24,28 @@ public int numStars;
    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        //Testing New Database
+        //--------------------------------------------------------------------
+        DatabaseHandler db = new DatabaseHandler(this);
+     // Inserting Contacts
+        //Log.d("Insert: ", "Inserting ..");
+        //db.addPatientLog(new SqlPatientLog("Feb 26, 2013", 1, "Not feeling well"));
+        //db.addPatientLog(new SqlPatientLog("Feb 25, 2013", 3, ""));
+        //db.addPatientLog(new SqlPatientLog("Feb 24, 2013", 4, "Not bad today"));
+        //db.addPatientLog(new SqlPatientLog("Feb 22, 2013", 5, "Really good today"));
+ 
+        // Reading all contacts
+        Log.d("Reading: ", "Reading all contacts..");
+        List<SqlPatientLog> logs = db.getAllPatientLogs();       
+ 
+        for (SqlPatientLog spl : logs) {
+            String log = "Id: "+spl.getID()+" ,Date: " + spl.getDate() + " ,Rating: " + spl.getRating() + " ,Details: " + spl.getDetails();
+                // Writing Patient Logs to log
+        Log.d("Name: ", log);
+    }
+    //-------------------------------------------------------------
+        
         	//Get Rating Bar Value	
         	
         	//Question Page Submit Button Press
@@ -83,6 +110,14 @@ public int numStars;
 		}
 		
 	}
+	
+
+	
+        
+ 
+        
+    
 
 
 }
+
