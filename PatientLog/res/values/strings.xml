@@ -13,6 +13,10 @@
     <string name="sSR3">Average</string>
     <string name="sSR4">Good</string>
     <string name="sSR5">Best</string>
-
+    <string name="Quest">Question</string>
+    <string name="Hist">History</string>
+    <string name="Can">Cancel</string>
+    <string name="Next">Next</string>
+    <string name="Prev">Previous</string>
 
 </resources>
