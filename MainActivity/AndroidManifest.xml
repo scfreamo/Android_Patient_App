@@ -14,9 +14,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-    <service android:name=".MyService" android:label="My Service">
-	</service>
-
+    <service android:name="reminder" android:label="Reminder">
+    </service>
+    <service android:name="DisplayNotification" android:label="DisplayNotification">
+    </service>
+	<receiver android:name=".TimeAlarm" />
         <activity
             android:name="ca.lakeheadu.patientlog.MainActivity"
             android:label="@string/app_name" >

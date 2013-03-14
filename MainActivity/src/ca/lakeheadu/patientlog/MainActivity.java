@@ -1,14 +1,15 @@
 package ca.lakeheadu.patientlog;
 
 
+import java.util.Calendar;
 import java.util.List;
 
 //import android.R.layout;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
@@ -24,6 +25,8 @@ import android.util.Log;
 public class MainActivity extends Activity implements OnRatingBarChangeListener {
 protected TextView lblRating;
 public int numStars;
+Context mContext;
+AlarmManager am;
 //Navigation Buttons are here
 //-------------Home Page-------------------
 public void goToHome(View v) {
@@ -48,6 +51,8 @@ public void goToQuest(View v) {
 				//This is where SQL script should go
 				DisplayToast("You have clicked the submit button on the question page!");
 				myRatingBar.setEnabled(true);
+				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+				setOneTimeAlarm();
 			}
 			else {
 				//This is for when users either don't change the star rating or put it back to zero
@@ -76,39 +81,37 @@ public void goToLog(View v) {
 public void onStart(Bundle SavedInstanceState){
 	super.onStart();
 	setContentView(R.layout.home);
+	
 }
 
-public void createNotification(View v){
-	displayNotification();
-}
-
-public void displayNotification(){
-	int notificationID = 1;
-	Intent i = new Intent(this, MainActivity.class);
-	i.putExtra("notificationID", notificationID);
-	
-	PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, 0);
-	
-	NotificationManager nm = (NotificationManager)
-			getSystemService(NOTIFICATION_SERVICE);
-	
-	Notification notif = new Notification.Builder(this)
-	 .setContentTitle("Health Log")
-     .setContentText("You haven't recorded your health rating in a while").setSmallIcon(R.drawable.ic_launcher)
-     .setContentIntent(pendingIntent).build();
- NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
- // Hide the notification after its selected
- notif.flags |= Notification.FLAG_AUTO_CANCEL;
-
- notificationManager.notify(0, notif);
-
-}
-	
+public void setOneTimeAlarm() {
+	  Intent intent = new Intent(this, TimeAlarm.class);
+	  PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+	    intent, PendingIntent.FLAG_ONE_SHOT);
+	  // this will get the current date and time
+		Calendar remindDate = Calendar.getInstance();
+// this will set it for a week from now but for testing a week is too long		
+//				remindDate.add(Calendar.DATE, 7);
+// this will make sure it is noon when the notification goes off 		
+//				remindDate.set(Calendar.HOUR_OF_DAY, 12);
+				remindDate.add(Calendar.SECOND, 10); // this is for testing
+	  am.set(AlarmManager.RTC_WAKEUP, remindDate.getTimeInMillis(), pendingIntent);
+	  
+	 }
 
     //@Override
    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+
+        // This if statement will tell us whether we are starting the program or
+        // have come from the notification. If we come from the notification the 
+        // program will start on the question screen. If it was not started from 
+        // a notification it will start on the home screen.
+        Bundle parameters = getIntent().getExtras();
+        if(parameters != null)
+        	setContentView(R.layout.activity_main);
+        else
+        	setContentView(R.layout.home);
         
         //Testing New Database
         //--------------------------------------------------------------------
