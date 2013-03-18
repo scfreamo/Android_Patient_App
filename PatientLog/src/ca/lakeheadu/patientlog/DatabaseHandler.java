@@ -154,12 +154,12 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		Date today = cal.getTime();
 		
 		String myDate = sdf.format(today);
-    	String countLog = "SELECT Count(*) FROM " + TABLE_PATIENTLOG + " WHERE Date ='" + myDate + "'";
+    	String countLog = "SELECT * FROM " + TABLE_PATIENTLOG + " WHERE Date ='" + myDate + "'";
     	
     	SQLiteDatabase db = this.getReadableDatabase();
     	Cursor cursor = db.rawQuery(countLog, null);
-    	
-    	if (cursor.getCount() > 0){
+
+    	if (cursor.getCount() >= 1){
     		return true;
     	}
     	else{
