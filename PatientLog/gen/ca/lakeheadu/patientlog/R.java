@@ -22,12 +22,9 @@ public final class R {
         public static final int btnQCancel=0x7f070005;
         public static final int btnQSubmit=0x7f070002;
         public static final int editText1=0x7f070003;
-        public static final int menu_settings=0x7f07000f;
+        public static final int menu_settings=0x7f07000c;
         public static final int ratingBar1=0x7f070001;
-        public static final int tableRow1=0x7f07000b;
-        public static final int tableRow2=0x7f07000c;
-        public static final int tableRow3=0x7f07000d;
-        public static final int tableRow4=0x7f07000e;
+        public static final int tableLayout1=0x7f07000b;
         public static final int textView1=0x7f070000;
         public static final int txtRDF=0x7f070004;
     }

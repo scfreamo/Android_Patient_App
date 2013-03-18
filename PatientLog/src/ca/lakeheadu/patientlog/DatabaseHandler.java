@@ -1,7 +1,11 @@
 package ca.lakeheadu.patientlog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
  
 import android.content.ContentValues;
 import android.content.Context;
@@ -142,5 +146,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         // return count
         return cursor.getCount();
     }
+    
+    public boolean logEntered(){
+    
+    	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		
+		String myDate = sdf.format(today);
+    	String countLog = "SELECT Count(*) FROM " + TABLE_PATIENTLOG + " WHERE Date ='" + myDate + "'";
+    	
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	Cursor cursor = db.rawQuery(countLog, null);
+    	
+    	if (cursor.getCount() > 0){
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
+    	
+    	}
+    }
  
-}
