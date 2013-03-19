@@ -1,15 +1,20 @@
 package ca.lakeheadu.patientlog;
 
 
+
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
+import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.series.XYSeries;
+import com.androidplot.xy.*;
+import com.androidplot.Plot;
 import android.app.Activity;
-import android.graphics.Color;
+import android.graphics.*;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -33,6 +38,98 @@ public void goToHome(View v) {
 	// TODO Auto-generated method stub
 	setContentView(R.layout.home);	
 }
+
+//-------------Graph Page------------------
+@SuppressWarnings("deprecation")
+public void goToGraph(View v) {
+	//DatabaseHandler db = new DatabaseHandler(this);
+	
+	
+	//List<SqlPatientLog> logs = db.getAllPatientLogs(); 
+	setContentView(R.layout.graph);
+	
+	XYPlot mySimpleXYPlot;
+
+
+        // initialize our XYPlot reference:
+        mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
+
+        // Create a couple arrays of y-values to plot:
+        //SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+        //Calendar cal = Calendar.getInstance();
+       
+        Number[] ratings = {1,3,8,19,56};
+        Number[] dates = {3,7,8,10,34};
+        
+       
+   
+        // Turn the above arrays into XYSeries':
+        XYSeries series2 = new SimpleXYSeries(
+                Arrays.asList(dates),
+                Arrays.asList(ratings),
+                "Patient Ratings");                             // Set the display title of the series
+
+        mySimpleXYPlot.getGraphWidget().getGridBackgroundPaint().setColor(Color.WHITE);
+        mySimpleXYPlot.getGraphWidget().getGridLinePaint().setColor(Color.BLACK);
+        mySimpleXYPlot.getGraphWidget().getGridLinePaint().setPathEffect(new DashPathEffect(new float[]{1,1}, 1));
+        mySimpleXYPlot.getGraphWidget().getDomainOriginLinePaint().setColor(Color.BLACK);
+        mySimpleXYPlot.getGraphWidget().getRangeOriginLinePaint().setColor(Color.BLACK);
+
+        mySimpleXYPlot.setBorderStyle(Plot.BorderStyle.SQUARE, null, null);
+        mySimpleXYPlot.getBorderPaint().setStrokeWidth(1);
+        mySimpleXYPlot.getBorderPaint().setAntiAlias(false);
+        mySimpleXYPlot.getBorderPaint().setColor(Color.WHITE);
+
+        // Create a formatter to use for drawing a series using LineAndPointRenderer:
+        
+
+        // setup our line fill paint to be a slightly transparent gradient:
+        Paint lineFill = new Paint();
+        lineFill.setAlpha(200);
+        lineFill.setShader(new LinearGradient(0, 0, 0, 250, Color.WHITE, Color.GREEN, Shader.TileMode.MIRROR));
+
+        LineAndPointFormatter formatter  = new LineAndPointFormatter(Color.rgb(0, 0,0), Color.BLUE, Color.RED);
+        formatter.setFillPaint(lineFill);
+        mySimpleXYPlot.getGraphWidget().setPaddingRight(2);
+        mySimpleXYPlot.addSeries(series2, formatter);
+
+        // by default, AndroidPlot displays developer guides to aid in laying out your plot.
+        // To get rid of them call disableAllMarkup():
+        mySimpleXYPlot.disableAllMarkup();
+    
+}
+
+//------------Admin Page------------------
+public void goToAdmin(View v) {
+	final DatabaseHandler db = new DatabaseHandler(this);
+	setContentView(R.layout.admin);
+	
+	Button btndropTable = (Button)findViewById(R.id.btndropTable);
+	Button btnFillTable = (Button)findViewById(R.id.btnFillTable);
+	btndropTable.setOnClickListener(new View.OnClickListener() {
+		
+		public void onClick(View v){
+			db.dropTable();
+			Toast.makeText(getBaseContext(), "Table dropped and re-created", Toast.LENGTH_SHORT).show();
+		}
+	});
+	
+	btnFillTable.setOnClickListener(new View.OnClickListener() {
+		
+		public void onClick(View v){
+			db.addPatientLog(new SqlPatientLog("Feb 25, 2013", 1, "Not feeling well"));
+	        db.addPatientLog(new SqlPatientLog("Feb 26, 2013", 3, ""));
+	        db.addPatientLog(new SqlPatientLog("Feb 27, 2013", 4, "Not bad today"));
+	        db.addPatientLog(new SqlPatientLog("Feb 28, 2013", 5, "Really good today"));
+	        db.addPatientLog(new SqlPatientLog("Mar 12, 2013", 3, "Average Day"));
+	        Toast.makeText(getBaseContext(), "Dummy data added to table", Toast.LENGTH_SHORT).show();
+		}
+	});
+	
+	
+}
+
+
 //---------Question Page----------------
 public void goToQuest(View v) {
 	// TODO Auto-generated method stub

@@ -10,8 +10,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="@string/Can"
-        android:onClick="goToHome" />
+        android:onClick="goToHome"
+        android:text="@string/Exit" />
 
     <Button
         android:id="@+id/btnLNext"
@@ -20,7 +20,8 @@
         android:layout_alignBaseline="@+id/btnLCan"
         android:layout_alignBottom="@+id/btnLCan"
         android:layout_toRightOf="@+id/btnLCan"
-        android:text="@string/Next" />
+        android:onClick="goToGraph"
+        android:text="@string/Graph" />
 
     <Button
         android:id="@+id/btnLPrev"
@@ -38,9 +39,33 @@
         android:layout_alignLeft="@+id/btnLPrev"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp" >
+        android:layout_marginTop="20dp" 
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp">
 
-       
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
     </TableLayout>
     
     </RelativeLayout>

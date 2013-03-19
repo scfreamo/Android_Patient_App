@@ -18,5 +18,10 @@
     <string name="Can">Cancel</string>
     <string name="Next">Next</string>
     <string name="Prev">Previous</string>
+    <string name="Exit">&quot;Exit&quot;</string>
+    <string name="Graph">&quot;Graph&quot;</string>
+    <string name="Admin">&quot;Admin Test&quot;</string>
+    <string name="DropTable">&quot;Drop Table&quot;</string>
+    <string name="FillTable">&quot;Fill Table&quot;</string>
 
 </resources>

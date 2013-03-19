@@ -135,7 +135,16 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 new String[] { String.valueOf(log.getID()) });
         db.close();
     }
- 
+    
+    //Truncate Table
+    public void dropTable(){
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	//Drop Table
+    	db.execSQL("DROP TABLE IF EXISTS " + TABLE_PATIENTLOG);
+    	//Recreate table
+    	onCreate(db);
+    }
+    
     // Getting contacts Count
     public int getContactsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_PATIENTLOG;
