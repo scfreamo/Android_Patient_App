@@ -2,6 +2,11 @@ package ca.lakeheadu.patientlog;
 
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -16,6 +21,8 @@ import com.androidplot.Plot;
 import android.app.Activity;
 import android.graphics.*;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -27,6 +34,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import au.com.bytecode.opencsv.CSVWriter;
 
 
 public class MainActivity extends Activity implements OnRatingBarChangeListener {
@@ -37,7 +45,10 @@ public int numStars;
 public void goToHome(View v) {
 	// TODO Auto-generated method stub
 	setContentView(R.layout.home);	
+	
+
 }
+
 
 //-------------Graph Page------------------
 @SuppressWarnings("deprecation")
@@ -143,11 +154,7 @@ public void goToQuest(View v) {
 	lblRating.setText("Please pick a star rating. 1 being worst and 5 being best.");
 	final EditText et = (EditText) findViewById(R.id.editText1);
 	
-	if (db.logEntered()){
-		setContentView(R.layout.home);
-		Toast.makeText(getBaseContext(), "You have already entered a log for today.", Toast.LENGTH_SHORT).show();
-	}
-	else{
+	
 		
 	
 	//Set appropriate listener for change events
@@ -158,7 +165,7 @@ public void goToQuest(View v) {
 				//This is where SQL script should go
 				
 				myRatingBar.setEnabled(true);
-				SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+				SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.CANADA);
 				Calendar cal = Calendar.getInstance();
 				Date today = cal.getTime();
 				
@@ -184,7 +191,7 @@ public void goToQuest(View v) {
 			
 		}
 	});
-	}
+	
 }
 //------History Page---------
 
@@ -194,7 +201,7 @@ public void goToLog(View v) {
 	
 	//Testing New Database
     //--------------------------------------------------------------------
-    DatabaseHandler db = new DatabaseHandler(this);
+    final DatabaseHandler db = new DatabaseHandler(this);
  // Inserting Contacts
     //Log.d("Insert: ", "Inserting ..");
     //db.addPatientLog(new SqlPatientLog("Feb 26, 2013", 1, "Not feeling well"));
@@ -204,7 +211,7 @@ public void goToLog(View v) {
 
     // Reading all contacts
    
-    List<SqlPatientLog> logs = db.getAllPatientLogs();       
+    final List<SqlPatientLog> logs = db.getAllPatientLogs();       
     TableLayout t1;
 	t1 = (TableLayout) findViewById(R.id.tableLayout1);
 	
@@ -240,10 +247,17 @@ public void goToLog(View v) {
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT));
 	
-	int count = 0;
+	int count = 1;
     for (SqlPatientLog spl : logs) {
     	
+    	
     	TableRow tr = new TableRow(this);
+    	
+    	if (count % 2 == 0 )
+    	{
+    		tr.setBackgroundColor(Color.LTGRAY);
+    	}
+    	
     	tr.setId(100 + count);
     	tr.setLayoutParams(new LayoutParams(
     			LayoutParams.MATCH_PARENT,
@@ -257,6 +271,7 @@ public void goToLog(View v) {
     	tr.addView(labelDATE);
     	
     	TextView labelRATING = new TextView(this);
+    	labelRATING.setGravity(Gravity.CENTER);
     	labelRATING.setId(200 + count);
     	labelRATING.setText(Integer.toString(spl.getRating()));
     	labelRATING.setPadding(5, 5, 5, 5);
@@ -279,6 +294,47 @@ public void goToLog(View v) {
         count++;
     }
 	
+    Button btnExport =(Button) findViewById(R.id.btnExport);
+	btnExport.setOnClickListener(new View.OnClickListener() {
+		
+		
+		public void onClick(View v) 
+		{
+			File sdCard = Environment.getExternalStorageDirectory();
+			File dir = new File (sdCard.getAbsolutePath() + "/PatientLog");
+			dir.mkdirs();
+			File file = new File(dir, "log.csv");
+			try {
+			FileOutputStream f = new FileOutputStream(file);
+			} catch (FileNotFoundException e1) {
+				 //TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			CSVWriter writer = null;
+			try {
+				writer = new CSVWriter(new FileWriter(file), '\t');
+				 // feed in your array (or convert your data to an array)
+				List<String[]> logs = db.getLogString();
+
+			     writer.writeAll(logs);
+
+				try {
+					writer.close();
+					Toast.makeText(getBaseContext(), "The log has been successfully exported!", Toast.LENGTH_SHORT).show();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    
+			
+			
+		}
+	});
+    	
 };
 public void onStart(Bundle SavedInstanceState){
 	super.onStart();

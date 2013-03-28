@@ -114,6 +114,37 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return logList;
     }
     
+    public List<String[]> getLogString(){
+    	List<String[]> logList = new ArrayList<String[]>();
+    	String selectQuery = "SELECT  * FROM " + TABLE_PATIENTLOG;
+    	 
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+       String[] title = {"Date","Rating","Details"};
+        logList.add(title);
+        
+        if (cursor.moveToFirst()) {
+            do {
+            	
+                // Adding contact to list
+            	String[] log = new String[3];
+            	
+            	
+            	log[0] = cursor.getString(1);
+            	log[1] = cursor.getString(2);
+            	log[2] = cursor.getString(3);
+            	
+                logList.add(log);
+                
+                
+                
+            } while (cursor.moveToNext());
+        }
+        
+    	
+    	return logList;
+    }
+    
  // Updating single contact
     public int updateLog(SqlPatientLog log) {
         SQLiteDatabase db = this.getWritableDatabase();
