@@ -35,21 +35,12 @@
         android:text="@string/Export" />
 
     <Button
-        android:id="@+id/btnLNext"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scrollView1"
-        android:layout_centerHorizontal="true"
-        android:onClick="goToGraph"
-        android:text="@string/Graph" />
-
-    <Button
         android:id="@+id/btnLCan"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="17dp"
-        android:layout_toRightOf="@+id/btnLNext"
         android:onClick="goToHome"
         android:text="@string/Exit" />
 

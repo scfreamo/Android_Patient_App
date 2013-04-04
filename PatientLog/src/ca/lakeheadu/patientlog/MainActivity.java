@@ -45,9 +45,21 @@ public int numStars;
 public void goToHome(View v) {
 	// TODO Auto-generated method stub
 	setContentView(R.layout.home);	
+	 Button btn1 = (Button) findViewById(R.id.button1);
+	    btn1.setOnClickListener(new View.OnClickListener() {
+
+	        public void onClick(View v) {
+	            // TODO Auto-generated method stub
+	        	Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
+	            finish();
+	            
+	            System.exit(0);
+	        }
+	    });
 	
 
 }
+
 
 
 //-------------Graph Page------------------
@@ -344,7 +356,17 @@ public void onStart(Bundle SavedInstanceState){
    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        
+        Button btn1 = (Button) findViewById(R.id.button1);
+	    btn1.setOnClickListener(new View.OnClickListener() {
+
+	        public void onClick(View v) {
+	            // TODO Auto-generated method stub
+	        	Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
+	            finish();
+	            
+	            System.exit(0);
+	        }
+	    });
         
 
    }
