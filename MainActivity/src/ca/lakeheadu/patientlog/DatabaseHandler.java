@@ -1,7 +1,11 @@
 package ca.lakeheadu.patientlog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
  
 import android.content.ContentValues;
 import android.content.Context;
@@ -110,6 +114,37 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return logList;
     }
     
+    public List<String[]> getLogString(){
+    	List<String[]> logList = new ArrayList<String[]>();
+    	String selectQuery = "SELECT  * FROM " + TABLE_PATIENTLOG;
+    	 
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+       String[] title = {"Date","Rating","Details"};
+        logList.add(title);
+        
+        if (cursor.moveToFirst()) {
+            do {
+            	
+                // Adding contact to list
+            	String[] log = new String[3];
+            	
+            	
+            	log[0] = cursor.getString(1);
+            	log[1] = cursor.getString(2);
+            	log[2] = cursor.getString(3);
+            	
+                logList.add(log);
+                
+                
+                
+            } while (cursor.moveToNext());
+        }
+        
+    	
+    	return logList;
+    }
+    
  // Updating single contact
     public int updateLog(SqlPatientLog log) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -131,7 +166,16 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 new String[] { String.valueOf(log.getID()) });
         db.close();
     }
- 
+    
+    //Truncate Table
+    public void dropTable(){
+    	SQLiteDatabase db = this.getWritableDatabase();
+    	//Drop Table
+    	db.execSQL("DROP TABLE IF EXISTS " + TABLE_PATIENTLOG);
+    	//Recreate table
+    	onCreate(db);
+    }
+    
     // Getting contacts Count
     public int getContactsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_PATIENTLOG;
@@ -142,5 +186,26 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         // return count
         return cursor.getCount();
     }
+    
+    public boolean logEntered(){
+    
+    	SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.CANADA);
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		
+		String myDate = sdf.format(today);
+    	String countLog = "SELECT * FROM " + TABLE_PATIENTLOG + " WHERE Date ='" + myDate + "'";
+    	
+    	SQLiteDatabase db = this.getReadableDatabase();
+    	Cursor cursor = db.rawQuery(countLog, null);
+
+    	if (cursor.getCount() >= 1){
+    		return true;
+    	}
+    	else{
+    		return false;
+    	}
+    	
+    	}
+    }
  
-}
