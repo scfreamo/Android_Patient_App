@@ -24,7 +24,7 @@
         android:width="200dp"
         android:onClick="goToLog" />
 
-    <Button
+     <Button
         android:id="@+id/btnHExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

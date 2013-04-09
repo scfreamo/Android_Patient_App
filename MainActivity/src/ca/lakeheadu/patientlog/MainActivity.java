@@ -51,6 +51,7 @@ AlarmManager am;
 public void goToHome(View v) {
 	// TODO Auto-generated method stub
 	setContentView(R.layout.home);	
+	 
 }
 
 
@@ -182,10 +183,9 @@ public void goToQuest(View v) {
 				
 				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 				setOneTimeAlarm();
-				
+								
 				DisplayToast("Your log has been successfully updated!");
 				goToHome(v);
-
 			}
 			else {
 				//This is for when users either don't change the star rating or put it back to zero
@@ -194,7 +194,6 @@ public void goToQuest(View v) {
 		
 		}
 	
-		
 		public void setOneTimeAlarm() {
 			  Intent intent = new Intent(MainActivity.this, TimeAlarm.class);
 			  PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
@@ -208,7 +207,6 @@ public void goToQuest(View v) {
 			  am.set(AlarmManager.RTC_WAKEUP, remindDate.getTimeInMillis(), pendingIntent);
 
 			 }
-
 		
 		private void DisplayToast(String msg) {
 			Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
@@ -368,7 +366,7 @@ public void onStart(Bundle SavedInstanceState){
    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        
+
         // This if statement will tell us whether we are starting the program or
         // have come from the notification. If we come from the notification the 
         // program will start on the question screen. If it was not started from 
@@ -379,16 +377,15 @@ public void onStart(Bundle SavedInstanceState){
         else
         	setContentView(R.layout.home);
    }
+        
+   public void goToClose(View v) {
 
-public void goToClose(View v) {
+		setContentView(R.layout.activity_main);
+		Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
+		finish();
 
-	setContentView(R.layout.activity_main);
-	Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
-	finish();
-	            
-	System.exit(0);
-	        }
-
+		System.exit(0);
+		        }
    
 
     @Override
