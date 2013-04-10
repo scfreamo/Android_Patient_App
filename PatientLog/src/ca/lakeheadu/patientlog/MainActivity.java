@@ -35,29 +35,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import au.com.bytecode.opencsv.CSVWriter;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 
 
 public class MainActivity extends Activity implements OnRatingBarChangeListener {
 protected TextView lblRating;
 public int numStars;
+Context mContext;
+AlarmManager am;
 //Navigation Buttons are here
 //-------------Home Page-------------------
 public void goToHome(View v) {
 	// TODO Auto-generated method stub
 	setContentView(R.layout.home);	
-	 Button btn1 = (Button) findViewById(R.id.button1);
-	    btn1.setOnClickListener(new View.OnClickListener() {
-
-	        public void onClick(View v) {
-	            // TODO Auto-generated method stub
-	        	Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
-	            finish();
-	            
-	            System.exit(0);
-	        }
-	    });
-	
-
+	 
 }
 
 
@@ -187,9 +181,11 @@ public void goToQuest(View v) {
 							
 				db.addPatientLog(new SqlPatientLog(myDate,rating,details));
 				
-				
+				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+				setOneTimeAlarm();
+								
 				DisplayToast("Your log has been successfully updated!");
-				setContentView(R.layout.home);
+				goToHome(v);
 			}
 			else {
 				//This is for when users either don't change the star rating or put it back to zero
@@ -198,6 +194,20 @@ public void goToQuest(View v) {
 		
 		}
 	
+		public void setOneTimeAlarm() {
+			  Intent intent = new Intent(MainActivity.this, TimeAlarm.class);
+			  PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+			  // this will get the current date and time
+				Calendar remindDate = Calendar.getInstance();
+		// this will set it for a week from now but for testing a week is too long		
+//						remindDate.add(Calendar.DATE, 7);
+		// this will make sure it is noon when the notification goes off 		
+//						remindDate.set(Calendar.HOUR_OF_DAY, 12);
+						remindDate.add(Calendar.SECOND, 10); // this is for testing
+			  am.set(AlarmManager.RTC_WAKEUP, remindDate.getTimeInMillis(), pendingIntent);
+
+			 }
+		
 		private void DisplayToast(String msg) {
 			Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show();
 			
@@ -356,20 +366,27 @@ public void onStart(Bundle SavedInstanceState){
    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        Button btn1 = (Button) findViewById(R.id.button1);
-	    btn1.setOnClickListener(new View.OnClickListener() {
 
-	        public void onClick(View v) {
-	            // TODO Auto-generated method stub
-	        	Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
-	            finish();
-	            
-	            System.exit(0);
-	        }
-	    });
-        
-
+        // This if statement will tell us whether we are starting the program or
+        // have come from the notification. If we come from the notification the 
+        // program will start on the question screen. If it was not started from 
+        // a notification it will start on the home screen.
+        Bundle parameters = getIntent().getExtras();
+        if(parameters != null)
+        	goToQuest(null);
+        else
+        	setContentView(R.layout.home);
    }
+        
+   public void goToClose(View v) {
+
+		setContentView(R.layout.activity_main);
+		Toast.makeText(getBaseContext(), "Closing", Toast.LENGTH_SHORT).show();
+		finish();
+
+		System.exit(0);
+		        }
+   
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

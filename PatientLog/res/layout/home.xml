@@ -32,6 +32,7 @@
         android:layout_alignRight="@+id/btnHHist"
         android:layout_below="@+id/btnHHist"
         android:layout_marginTop="18dp"
+        android:onClick="goToClose"
         android:text="@string/Exit" />
 
 </RelativeLayout>
